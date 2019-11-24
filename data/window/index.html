@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Webcam Recorder</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+  <meta charset="utf-8">
+</head>
+<body>
+  <video id="player" muted></video>
+  <div id="tools">
+    <label title="Enable or disable audio recording (restart required)"><input type="checkbox" id="audio"> Record Audio</label>&nbsp;
+    <button id="record" disabled title="Press this button to start recording">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="7" fill="#ff4949"/>
+      </svg>
+    </button>
+    <button id="stop" disabled title="Press this button to stop recording and save the recorded stream as a WebM video file">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <rect width="12" height="12" x="6" y="6"/>
+      </svg>
+    </button>
+  </div>
+  <div id="downloads">
+  </div>
+  <template id="download">
+    <div>
+      <span>2019-10-23 15:12</span>
+      <button>×</button>
+    </div>
+  </template>
+  <div id="notify">Loading...</div>
+  <script type="text/javascript" src="/app.js/base.js"></script>
+  <script type="text/javascript" src="index.js"></script>
+  <script async type="text/javascript" src="../../app.js/misc/single-window.js"></script>
+</body>
+</html>

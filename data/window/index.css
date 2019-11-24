@@ -1,0 +1,106 @@
+body {
+  margin: 0;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.01);
+  min-width: 500px;
+  min-height: 500px;
+  font-size: 13px;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -1000;
+  overflow: hidden;
+}
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: opacity 0.25s ease-in-out;
+}
+button:active {
+  opacity: 0.2;
+}
+button:disabled {
+  opacity: 0.4;
+}
+#tools {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+}
+#tools button {
+  background-color: #eee;
+  width: 48px;
+  height: 48px;
+  margin-right: 1px;
+}
+@keyframes record {
+  0% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.4;
+  }
+}
+body[data-recording=true] #record:disabled {
+  animation: record 1s infinite;
+}
+#downloads {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #eee;
+}
+#downloads:empty {
+  display: none;
+}
+#downloads > div {
+  position: relative;
+  width: fit-content;
+  padding: 10px 0  10px 5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+#downloads > div:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+#downloads > div button {
+  background-color: transparent;
+  font-size: 20px;
+  border-right: solid 1px #fff;
+  margin-left: 5px;
+}
+#downloads > div:hover button {
+  border-right-color: transparent;
+}
+#downloads > div button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+#notify {
+  background-color: #ffffed;
+  border: solid 1px #e8ec3a;
+  padding: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+#notify:empty {
+  display: none;
+}
