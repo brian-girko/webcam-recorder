@@ -43,29 +43,56 @@ app.storage.get({
   notify.textContent = e.message;
 }));
 
-record.addEventListener('click', () => {
+record.addEventListener('click', async () => {
   const recorder = new MediaRecorder(player.srcObject, {
     'mimeType': 'video/webm'
   });
-  const blobs = [];
+  const capture = {
+    progress: 0,
+    offset: 0,
+    request() {
+      recorder.requestData();
+      clearTimeout(capture.id);
+      setTimeout(capture.request, 10000);
+    },
+    download() {
+      if (capture.progress === 0 && recorder.state === 'inactive') {
+        const end = new Date();
+        const filename = app.runtime.manifest.name + ' ' +
+          end.toLocaleDateString() + ' - ' +
+          readable((end - player.start) / 1000) + '.webm';
+
+        capture.file.download(filename, 'video/webm').then(() => capture.file.remove()).catch(e => {
+          console.warn(e);
+          notify.textContent = 'An error occurred during saving: ' + e.message;
+        });
+      }
+    }
+  };
+  capture.file = new File();
+  await capture.file.open();
+
   recorder.addEventListener('dataavailable', e => {
-    blobs.push(e.data);
+    console.log(e.data.size);
+    if (e.data.size) {
+      capture.progress += 1;
+      const reader = new FileReader();
+      reader.onload = e => {
+        capture.file.chunks({
+          offset: capture.offset,
+          buffer: new Uint8Array(e.target.result)
+        }).then(() => {
+          capture.progress -= 1;
+          capture.download();
+        });
+      };
+      reader.readAsArrayBuffer(e.data);
+      capture.offset += 1;
+    }
   });
   recorder.addEventListener('stop', () => {
-    const end = new Date();
-    const a = document.createElement('a');
-    const blob = new Blob(blobs, {
-      type: 'video/webm'
-    });
-    a.href = URL.createObjectURL(blob);
-    a.download = app.runtime.manifest.name + ' ' +
-      end.toLocaleDateString() + ' - ' +
-      readable((end - player.start) / 1000) + '.webm';
-    a.click();
-    window.setTimeout(() => {
-      URL.revokeObjectURL(a.href);
-      a.remove();
-    }, 10000);
+    clearTimeout(capture.id);
+    capture.download();
   });
 
   record.recorder = recorder;
@@ -73,6 +100,7 @@ record.addEventListener('click', () => {
   record.disabled = true;
   document.body.dataset.recording = true;
   recorder.start();
+  capture.request();
   document.title = 'Press ◼ to stop recording';
 });
 stop.addEventListener('click', () => {
@@ -86,3 +114,27 @@ stop.addEventListener('click', () => {
 audio.addEventListener('change', e => app.storage.set({
   audio: e.target.checked
 }).then(() => location.reload()));
+
+// save files from indexdb and remove the
+{
+  const restore = async () => {
+    const os = 'databases' in indexedDB ? await indexedDB.databases() : Object.keys(localStorage)
+      .filter(name => name.startsWith('file:'))
+      .map(name => ({
+        name: name.replace('file:', '')
+      }));
+    for (const o of os) {
+      const file = new File(o.name);
+      await file.open();
+      try {
+        await file.download('restored.webm', 'video/webm');
+      }
+      catch (e) {
+        console.warn(e);
+      }
+      file.remove();
+    }
+  };
+  restore();
+}
+

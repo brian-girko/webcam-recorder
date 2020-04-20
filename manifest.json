@@ -1,12 +1,13 @@
 {
   "manifest_version": 2,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "name": "Webcam Recorder",
   "description": "Record video from your computer's camera and/or record audio from your microphone",
   "offline_enabled": true,
   "permissions": [
     "storage",
-    "contextMenus"
+    "contextMenus",
+    "downloads"
    ],
    "background": {
     "persistent": false,
@@ -17,6 +18,7 @@
     ]
   },
   "browser_action": {},
+  "homepage_url": "https://add0n.com/webcam-recorder.html",
   "icons": {
     "16": "data/icons/16.png",
     "19": "data/icons/19.png",
