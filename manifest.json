@@ -1,13 +1,14 @@
 {
   "manifest_version": 2,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "name": "Webcam Recorder",
   "description": "Record video from your computer's camera and/or record audio from your microphone",
   "offline_enabled": true,
   "permissions": [
     "storage",
     "contextMenus",
-    "downloads"
+    "downloads",
+    "unlimitedStorage"
    ],
    "background": {
     "persistent": false,

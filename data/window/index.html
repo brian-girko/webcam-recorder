@@ -6,12 +6,21 @@
   <meta charset="utf-8">
 </head>
 <body>
-  <video id="player" muted></video>
   <div id="tools">
     <label title="Enable or disable audio recording (restart required)"><input type="checkbox" id="audio"> Record Audio</label>&nbsp;
     <button id="record" disabled title="Press this button to start recording">
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <circle cx="12" cy="12" r="7" fill="#ff4949"/>
+      </svg>
+    </button>
+    <button id="pause" disabled title="Pause and resume recording">
+      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 38h8V10h-8v28zm16-28v28h8V10h-8z"/>
+        <path d="M0 0h48v48H0z" fill="none"/>
+      </svg>
+      <svg viewBox="0 0 48 48"  xmlns="http://www.w3.org/2000/svg">
+        <path d="M-838-2232H562v3600H-838z" fill="none"/><path d="M16 10v28l22-14z"/>
+        <path d="M0 0h48v48H0z" fill="none"/>
       </svg>
     </button>
     <button id="stop" disabled title="Press this button to stop recording and save the recorded stream as a WebM video file">
@@ -20,6 +29,7 @@
       </svg>
     </button>
   </div>
+  <video id="player" muted></video>
   <div id="downloads">
   </div>
   <template id="download">

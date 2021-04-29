@@ -3,6 +3,7 @@
 
 const record = document.getElementById('record');
 const stop = document.getElementById('stop');
+const pause = document.getElementById('pause');
 const notify = document.getElementById('notify');
 const player = document.getElementById('player');
 const audio = document.getElementById('audio');
@@ -37,6 +38,7 @@ app.storage.get({
   player.srcObject = e;
   player.play();
   record.disabled = false;
+  record.stream = e;
   player.start = new Date();
   document.title = 'Press ● to start recording';
 }).catch(e => {
@@ -59,7 +61,7 @@ record.addEventListener('click', async () => {
       if (capture.progress === 0 && recorder.state === 'inactive') {
         const end = new Date();
         const filename = app.runtime.manifest.name + ' ' +
-          end.toLocaleDateString() + ' - ' +
+          end.toLocaleDateString().replace(/\//g, '_') + ' - ' +
           readable((end - player.start) / 1000) + '.webm';
 
         capture.file.download(filename, 'video/webm').then(() => capture.file.remove()).catch(e => {
@@ -73,7 +75,6 @@ record.addEventListener('click', async () => {
   await capture.file.open();
 
   recorder.addEventListener('dataavailable', e => {
-    console.log(e.data.size);
     if (e.data.size) {
       capture.progress += 1;
       const reader = new FileReader();
@@ -97,15 +98,23 @@ record.addEventListener('click', async () => {
 
   record.recorder = recorder;
   stop.disabled = false;
+  pause.disabled = false;
   record.disabled = true;
   document.body.dataset.recording = true;
   recorder.start();
   capture.request();
-  document.title = 'Press ◼ to stop recording';
+  document.title = 'Press ◼ to stop recording or press ❚❚ to pause recording';
+  document.body.dataset.state = record.recorder.state;
 });
 stop.addEventListener('click', () => {
   record.recorder.stop();
+  // try {
+  //   record.stream.getTracks().forEach(e => e.stop());
+  // }
+  // catch (e) {}
+
   stop.disabled = true;
+  pause.disabled = true;
   record.disabled = false;
   document.body.dataset.recording = false;
   document.title = 'Press ● to start a new recording';
@@ -138,3 +147,16 @@ audio.addEventListener('change', e => app.storage.set({
   restore();
 }
 
+document.getElementById('pause').addEventListener('click', e => {
+  if (record.recorder.state === 'recording') {
+    record.recorder.pause();
+    player.pause();
+    e.target.classList.add('active');
+  }
+  else {
+    player.play();
+    record.recorder.resume();
+    e.target.classList.remove('active');
+  }
+  document.body.dataset.state = record.recorder.state;
+});

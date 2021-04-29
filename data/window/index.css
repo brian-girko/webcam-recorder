@@ -1,11 +1,30 @@
 body {
   margin: 0;
+  width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.01);
   min-width: 500px;
   min-height: 500px;
   font-size: 13px;
   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  display: grid;
+  grid-template-rows: min-content 1fr;
+}
+body[data-state="paused"]::before {
+  content: 'paused!';
+  position: absolute;
+  top: 50vh;
+  left: 0;
+  width: 100vw;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.5);
+  color: #d7d7d7;
+  padding: 5px 10px;
+  font-size: 200%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
 }
 video {
   position: absolute;
@@ -32,11 +51,13 @@ button:disabled {
   opacity: 0.4;
 }
 #tools {
-  position: absolute;
-  top: 10px;
-  right: 10px;
   display: flex;
   align-items: center;
+  align-self: end;
+  justify-self: end;
+}
+#tools button svg {
+  pointer-events: none;
 }
 #tools button {
   background-color: #eee;
@@ -55,7 +76,7 @@ button:disabled {
     opacity: 0.4;
   }
 }
-body[data-recording=true] #record:disabled {
+body[data-recording=true][data-state=recording] #record:disabled {
   animation: record 1s infinite;
 }
 #downloads {
@@ -102,5 +123,12 @@ body[data-recording=true] #record:disabled {
   transform: translateX(-50%) translateY(-50%);
 }
 #notify:empty {
+  display: none;
+}
+
+#pause.active svg:first-child {
+  display: none;
+}
+#pause:not(.active) svg:last-child {
   display: none;
 }
