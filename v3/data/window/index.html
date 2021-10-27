@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Webcam Recorder</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+  <meta charset="utf-8">
+</head>
+<body>
+  <div id="tools">
+    <label title="Enable or disable audio recording (restart required)"><input type="checkbox" id="audio"> Record Audio</label>&nbsp;
+    <button id="record" disabled title="Press this button to start recording">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="7" fill="#ff4949"/>
+      </svg>
+    </button>
+    <button id="pause" disabled title="Pause and resume recording">
+      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 38h8V10h-8v28zm16-28v28h8V10h-8z"/>
+        <path d="M0 0h48v48H0z" fill="none"/>
+      </svg>
+      <svg viewBox="0 0 48 48"  xmlns="http://www.w3.org/2000/svg">
+        <path d="M-838-2232H562v3600H-838z" fill="none"/><path d="M16 10v28l22-14z"/>
+        <path d="M0 0h48v48H0z" fill="none"/>
+      </svg>
+    </button>
+    <button id="stop" disabled title="Press this button to stop recording and save the recorded stream as a WebM video file">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <rect width="12" height="12" x="6" y="6"/>
+      </svg>
+    </button>
+    <button id="capture" title="Press this button to take a screenshot">
+      <svg viewBox="0 0 24 24" width="28">
+        <path d="M19,7h-0.4c-0.4,0-0.7-0.2-0.9-0.6l-1.2-2.3c-0.3-0.7-1-1.1-1.8-1.1H9.2C8.5,3,7.8,3.4,7.4,4.1L6.3,6.4   C6.1,6.8,5.8,7,5.4,7H5c-2.2,0-4,1.8-4,4v6c0,2.2,1.8,4,4,4h14c2.2,0,4-1.8,4-4v-6C23,8.8,21.2,7,19,7z M12,17c-2.2,0-4-1.8-4-4   c0-2.2,1.8-4,4-4s4,1.8,4,4C16,15.2,14.2,17,12,17z"/>
+      </svg>
+    </button>
+  </div>
+  <video id="player" muted></video>
+  <div id="downloads">
+  </div>
+  <template id="download">
+    <div>
+      <span>2019-10-23 15:12</span>
+      <button>×</button>
+    </div>
+  </template>
+  <div id="notify">Loading...</div>
+  <script type="text/javascript" src="file.js"></script>
+  <script type="text/javascript" src="index.js"></script>
+</body>
+</html>
